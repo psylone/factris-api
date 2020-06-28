@@ -1,24 +1,37 @@
-# README
+# Factris API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Simple [factris](https://factris.com) API.
 
-Things you may want to cover:
+# Dependencies
 
-* Ruby version
+- Ruby `2.7+`
+- Bundler `2.1.4`
+- Rails `6.0+`
+- Puma `4.3+`
+- PostgreSQL `9.3+`
 
-* System dependencies
+# Getting started
 
-* Configuration
+1. Clone repository:
 
-* Database creation
+```
+git clone git@github.com:psylone/factris-api.git && cd factris-api
+```
 
-* Database initialization
+2. Setup dependencies and create data base:
 
-* How to run the test suite
+```
+bin/setup
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+3. Start application:
 
-* Deployment instructions
+```
+bin/rails s
+```
 
-* ...
+# Running test suite
+
+```
+bin/rspec
+```
