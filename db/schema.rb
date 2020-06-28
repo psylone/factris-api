@@ -10,9 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2020_06_28_162931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "contracts", force: :cascade do |t|
+    t.string "number", null: false
+    t.boolean "active", default: true, null: false
+    t.date "start_date", null: false
+    t.date "end_date"
+    t.decimal "fixed_fee", null: false
+    t.integer "days_included", null: false
+    t.decimal "additional_fee", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["active"], name: "index_contracts_on_active"
+    t.index ["number", "start_date", "end_date"], name: "index_contracts_on_number_and_start_date_and_end_date", unique: true
+  end
 
 end
