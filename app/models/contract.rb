@@ -10,4 +10,6 @@ class Contract < ApplicationRecord
     only_integer: true,
     greater_than: 0
   }
+
+  has_many :invoices, dependent: :destroy
 end

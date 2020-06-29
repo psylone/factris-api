@@ -71,7 +71,8 @@ module Contracts
     def surrounding_contracts_exist?
       Contract.where.not(id: @contract.id)
         .where(number: @number)
-        .where(%[start_date <= ? AND (end_date IS NULL OR end_date >= ?)], @start_date, @end_date)
+        .where(%[start_date <= ?], @start_date)
+        .where(%[(end_date IS NULL OR end_date >= ?)], @end_date)
         .exists?
     end
 

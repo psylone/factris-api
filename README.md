@@ -41,3 +41,11 @@ bin/rails s
 ```
 bin/rspec
 ```
+
+# Run with Docker
+
+```
+docker-compose build
+docker-compose run app bin/setup
+docker-compose up
+```

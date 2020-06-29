@@ -1,0 +1,5 @@
+en:
+  services:
+    fees:
+      calculate_service:
+        missing_contract: 'There is no contract for such invoice'

@@ -5,3 +5,8 @@ en:
         contract:
           end_date:
             too_early: 'end_date must be later than start_date'
+        fee:
+          due_date:
+            too_early: 'due_date must be later than issue_date'
+          paid_date:
+            too_early: 'paid_date must be later than purchase_date'

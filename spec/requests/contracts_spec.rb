@@ -1,8 +1,8 @@
 RSpec.describe 'Contracts API', type: :request do
-  describe 'POST /contracts' do
+  describe 'POST /api/v1/contracts' do
     context 'missing parameters' do
       it 'returns an error' do
-        post '/contracts'
+        post '/api/v1/contracts'
 
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response_body['errors']).to eq(
@@ -23,7 +23,7 @@ RSpec.describe 'Contracts API', type: :request do
       end
 
       it 'returns an error' do
-        post '/contracts', params: { contract: params }
+        post '/api/v1/contracts', params: { contract: params }
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -45,14 +45,14 @@ RSpec.describe 'Contracts API', type: :request do
       let(:last_contract) { Contract.last }
 
       it 'creates a new contract' do
-        expect { post '/contracts', params: { contract: params } }
+        expect { post '/api/v1/contracts', params: { contract: params } }
           .to change { Contract.count }.from(0).to(1)
 
         expect(response).to have_http_status(:created)
       end
 
       it 'returns a contract' do
-        post '/contracts', params: { contract: params }
+        post '/api/v1/contracts', params: { contract: params }
 
         expect(response_body['data']).to a_hash_including(
           'id' => last_contract.id.to_s,
