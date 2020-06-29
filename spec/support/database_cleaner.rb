@@ -1,9 +1,6 @@
 RSpec.configure do |config|
   config.before(:suite) do
-    # This is by default, but let's keep it explicit.
     DatabaseCleaner[:active_record].strategy = :transaction
-
-    # Initial cleanup before running the test suite.
     DatabaseCleaner[:active_record].clean_with(:truncation)
   end
 
