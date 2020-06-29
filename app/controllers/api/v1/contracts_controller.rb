@@ -1,4 +1,4 @@
-class ContractsController < ApplicationController
+class Api::V1::ContractsController < ApplicationController
   def create
     # We can do it inside `before_action`, but since we have
     # it in only one place, let's call `validate_with!` here

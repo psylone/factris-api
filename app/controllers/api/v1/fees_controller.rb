@@ -1,4 +1,4 @@
-class FeesController < ApplicationController
+class Api::V1::FeesController < ApplicationController
   def create
     fee_params = validate_with!(FeeParamsContract, params.to_unsafe_h)
     result = Fees::CalculateService.call(fee_params[:fee])

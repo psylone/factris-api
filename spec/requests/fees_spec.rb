@@ -1,8 +1,8 @@
 RSpec.describe 'Fees API', type: :request do
-  describe 'POST /fees' do
+  describe 'POST /api/v1/fees' do
     context 'missing parameters' do
       it 'returns an error' do
-        post '/fees'
+        post '/api/v1/fees'
 
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response_body['errors']).to eq(
@@ -24,7 +24,7 @@ RSpec.describe 'Fees API', type: :request do
       end
 
       it 'returns an error' do
-        post '/fees', params: { fee: params }
+        post '/api/v1/fees', params: { fee: params }
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -43,7 +43,7 @@ RSpec.describe 'Fees API', type: :request do
       end
 
       it 'returns an error' do
-        post '/fees', params: { fee: params }
+        post '/api/v1/fees', params: { fee: params }
 
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response_body['errors']).to eq(
@@ -77,7 +77,7 @@ RSpec.describe 'Fees API', type: :request do
       end
 
       it 'returns a fee' do
-        post '/fees', params: { fee: params }
+        post '/api/v1/fees', params: { fee: params }
 
         expect(response).to have_http_status(:created)
         expect(response_body['meta']).to eq('fee' => 22.0)
