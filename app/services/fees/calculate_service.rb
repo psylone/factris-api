@@ -7,7 +7,7 @@ module Fees
     option :due_date
     option :purchase_date
     option :amount
-    option :paid_date, default: proc { Date.current }
+    option :paid_date, optional: true
     option :contract, default: proc { fetch_contract }
 
     attr_reader :fee
@@ -15,6 +15,7 @@ module Fees
     def call
       return fail!(I18n.t(:missing_contract, scope: 'services.fees.calculate_service')) if @contract.blank?
 
+      create_invoice!
       @fee = fixed_fee + additional_fee
     end
 
@@ -28,6 +29,17 @@ module Fees
         .first
     end
 
+    def create_invoice!
+      @contract.invoices.create!(
+        number: @number,
+        issue_date: @issue_date,
+        due_date: @due_date,
+        purchase_date: @purchase_date,
+        amount: @amount,
+        paid_date: @paid_date
+      )
+    end
+
     def fixed_fee
       @contract.fixed_fee * @amount
     end
@@ -38,7 +50,8 @@ module Fees
 
     def paid_days
       days_included_end_date = @purchase_date + @contract.days_included
-      (@paid_date - days_included_end_date + 1).to_i
+      paid_date = @paid_date || Date.current
+      (paid_date - days_included_end_date + 1).to_i
     end
   end
 end

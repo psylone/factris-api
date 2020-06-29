@@ -24,7 +24,7 @@ RSpec.describe Fees::CalculateService do
   context 'without paid_date' do
     let(:date) { '2019-01-25'.to_date }
 
-    before do
+    let!(:contract) do
       create(
         :contract,
         number: params[:number],
@@ -34,7 +34,9 @@ RSpec.describe Fees::CalculateService do
         days_included: 14,
         additional_fee: 0.001
       )
+    end
 
+    before do
       params.delete(:paid_date)
     end
 
@@ -46,10 +48,15 @@ RSpec.describe Fees::CalculateService do
         expect(result.fee).to eq(27.0)
       end
     end
+
+    it 'creates invoice' do
+      expect { subject.call(params) }
+        .to change { contract.invoices.count }.from(0).to(1)
+    end
   end
 
   context 'with paid date' do
-    before do
+    let!(:contract) do
       create(
         :contract,
         number: params[:number],
@@ -66,6 +73,11 @@ RSpec.describe Fees::CalculateService do
 
       expect(result).to be_success
       expect(result.fee).to eq(22.0)
+    end
+
+    it 'creates invoice' do
+      expect { subject.call(params) }
+        .to change { contract.invoices.count }.from(0).to(1)
     end
   end
 end
