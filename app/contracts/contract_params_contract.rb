@@ -5,9 +5,9 @@ class ContractParamsContract < Dry::Validation::Contract
     required(:contract).hash do
       required(:number).filled(:string)
       required(:start_date).filled(:date)
-      required(:fixed_fee).filled(gt?: 0)
+      required(:fixed_fee).filled(:decimal, gt?: 0)
       required(:days_included).filled(:integer, gt?: 0)
-      required(:additional_fee).filled(gt?: 0)
+      required(:additional_fee).filled(:decimal, gt?: 0)
       optional(:active).filled(:bool)
       optional(:end_date).filled(:date)
     end
