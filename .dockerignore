@@ -1,0 +1,7 @@
+log/*
+tmp/*
+storage/*
+config/master.key
+.git
+.gitignore
+.ruby-version
