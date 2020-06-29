@@ -18,13 +18,19 @@ Simple [factris](https://factris.com) API.
 git clone git@github.com:psylone/factris-api.git && cd factris-api
 ```
 
-2. Setup dependencies and create data base:
+2. Setup dependencies and create database:
 
 ```
 bin/setup
 ```
 
-3. Start application:
+3. Populate the database with seeds (optional):
+
+```
+bin/rails db:seed
+```
+
+4. Start application:
 
 ```
 bin/rails s

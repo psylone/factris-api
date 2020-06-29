@@ -1,0 +1,7 @@
+en:
+  dry_validation:
+    errors:
+      rules:
+        contract:
+          end_date:
+            too_early: 'end_date must be later than start_date'
