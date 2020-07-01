@@ -80,4 +80,29 @@ RSpec.describe Fees::CalculateService do
         .to change { contract.invoices.count }.from(0).to(1)
     end
   end
+
+  context 'when days_included exceed paid_date' do
+    let!(:contract) do
+      create(
+        :contract,
+        number: params[:number],
+        start_date: '2019-01-01',
+        end_date: '2019-09-30',
+        fixed_fee: 0.02,
+        days_included: 14,
+        additional_fee: 0.001
+      )
+    end
+
+    before do
+      params[:paid_date] = '2019-01-15'.to_date
+    end
+
+    it 'considers only fixed_fee' do
+      result = subject.call(params)
+
+      expect(result).to be_success
+      expect(result.fee).to eq(20.0)
+    end
+  end
 end

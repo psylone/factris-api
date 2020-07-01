@@ -51,7 +51,8 @@ module Fees
     def paid_days
       days_included_end_date = @purchase_date + @contract.days_included
       paid_date = @paid_date || Date.current
-      (paid_date - days_included_end_date + 1).to_i
+      result = paid_date - days_included_end_date + 1
+      [result.to_i, 0].max
     end
   end
 end
