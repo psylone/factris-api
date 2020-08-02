@@ -12,4 +12,6 @@ class Contract < ApplicationRecord
   }
 
   has_many :invoices, dependent: :destroy
+
+  scope :active, -> { where(active: true) }
 end
