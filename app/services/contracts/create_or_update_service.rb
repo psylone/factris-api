@@ -22,7 +22,11 @@ module Contracts
       Contract.transaction do
         store_contract!
         process_self_overlapping!
-        process_overlapping if @contract.active?
+
+        if @contract.active?
+          process_overlapping
+          process_partial_overlapping
+        end
       end
     rescue ActiveRecord::RecordInvalid
       fail!(@contract.errors)
@@ -60,6 +64,20 @@ module Contracts
         overlapping_contracts.where(%[end_date <= ?], @end_date).update_all(active: false)
       else
         overlapping_contracts.update_all(active: false)
+      end
+    end
+
+    def process_partial_overlapping
+      Contract.active
+        .where(%[start_date < ?], @start_date)
+        .where(%[end_date >= ?], @start_date)
+        .update_all(end_date: @start_date.to_date.yesterday)
+
+      if @end_date.present?
+        Contract.active
+          .where(%[start_date <= ?], @end_date)
+          .where(%[end_date > ? OR end_date IS NULL], @end_date)
+          .update_all(start_date: @end_date.to_date.tomorrow)
       end
     end
   end

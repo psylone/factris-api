@@ -195,4 +195,64 @@ RSpec.describe Contracts::CreateOrUpdateService do
       expect(existing_contract.reload).to be_active
     end
   end
+
+  context 'with partially overlapping contracts' do
+    let!(:first_contract) do
+      create(
+        :contract,
+        number: 'A10',
+        start_date: '2019-01-01',
+        end_date: '2019-09-30',
+        fixed_fee: 0.02,
+        days_included: 14,
+        additional_fee: 0.001
+      )
+    end
+
+    let!(:last_contract) do
+      create(
+        :contract,
+        number: 'A10',
+        start_date: '2020-01-01',
+        fixed_fee: 0.0175,
+        days_included: 14,
+        additional_fee: 0.001
+      )
+    end
+
+    before do
+      params[:number] = 'A10'
+      params[:start_date] = '2019-09-01'
+      params[:end_date] = '2020-01-31'
+      params[:fixed_fee] = 0.019
+      params[:days_included] = 14
+      params[:additional_fee] = 0.001
+    end
+
+    it 'creates a new active contract' do
+      result = subject.call(params)
+
+      expect(result).to be_success
+      expect(result.contract).to be_persisted
+      expect(result.contract).to be_active
+    end
+
+    it 'changes end_date for existing contracts' do
+      result = subject.call(params)
+      first_contract.reload
+
+      expect(first_contract).to be_active
+      expect(first_contract.start_date).to eq('2019-01-01'.to_date)
+      expect(first_contract.end_date).to eq('2019-08-31'.to_date)
+    end
+
+    it 'changes start_date for existing contracts' do
+      result = subject.call(params)
+      last_contract.reload
+
+      expect(last_contract).to be_active
+      expect(last_contract.start_date).to eq('2020-02-01'.to_date)
+      expect(last_contract.end_date).to be_nil
+    end
+  end
 end
